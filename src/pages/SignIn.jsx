@@ -1,11 +1,7 @@
-import Footer from "../components/Footer"
-import Header from "../components/Header"
 
 
 function SignIn() {
   return (
-    <body>
-        <Header />
         <main className="main bg-dark">
             <section className="sign-in-content">
                 <i className="fa fa-user-circle sign-in-icon"></i>
@@ -32,8 +28,6 @@ function SignIn() {
                 </form>
             </section>
         </main>
-        <Footer />
-    </body>
   )
 }
 

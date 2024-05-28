@@ -5,7 +5,7 @@ html {
   text-align: center;
   color: #2c3e50;
 }
-
+#root,
 body {
   margin: 0;
   display: flex;

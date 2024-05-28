@@ -3,6 +3,8 @@ import Home from "./pages/Home"
 import Error from "./components/Error";
 import './style/main.css'
 import SignIn from "./pages/SignIn";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
 //import { useSelector, useDispatch } from 'react-redux'
 //import { increment, decrement, incrementByAmount, selectValue } from './features/counter/counterSlice'
 
@@ -13,11 +15,13 @@ function App() {
 
     return (
       <BrowserRouter>
+      <Header />
       <Routes>
           <Route path="/" element={<Home/>}/>
           <Route path="/signin" element={<SignIn/>}/>
           <Route path="*" element={<Error/>}/>
       </Routes>
+      <Footer />
       </BrowserRouter>
   )
     /*<>
