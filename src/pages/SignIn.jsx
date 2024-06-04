@@ -1,33 +1,63 @@
-
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginUser } from '../utils/apiHandler';
+import { selectToken } from '../features/counter/authSlice';
 
 function SignIn() {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
+    const dispatch = useDispatch();
+    const token = useSelector(selectToken);
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const result = await loginUser(email, password);
+        if (!result.error) {
+          console.log("Login successful:", result.login.data);
+        } else {
+          console.error("Login failed:", result.error);
+          setErrorMessage('Identifiant ou mot de passe incorrect');
+        }
+      };
+
   return (
         <main className="main bg-dark">
-            <section className="sign-in-content">
-                <i className="fa fa-user-circle sign-in-icon"></i>
-                <h1>Sign In</h1>
-                <form>
-                <div className="input-wrapper">
-                    <label for="username">Username</label
-                    ><input type="text" id="username" />
-                </div>
-                <div className="input-wrapper">
-                    <label for="password">Password</label
-                    ><input type="password" id="password" />
-                </div>
-                <div className="input-remember">
-                    <input type="checkbox" id="remember-me" /><label for="remember-me"
-                    >Remember me</label
-                    >
-                </div>
-                {/* PLACEHOLDER DUE TO STATIC SITE */}
-                <a href="./user.html" className="sign-in-button">Sign In</a>
-                {/* <!-- SHOULD BE THE BUTTON BELOW -->
-                <!-- <button className="sign-in-button">Sign In</button> -->
-                <!--  --> */}
-                </form>
-            </section>
-        </main>
+      <section className="sign-in-content">
+        <i className="fa fa-user-circle sign-in-icon"></i>
+        <h1>Sign In</h1>
+        <form onSubmit={handleSubmit}>
+          <div className="input-wrapper">
+            <label htmlFor="username">Username</label>
+            <input
+              type="text"
+              id="username"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
+          <div className="input-wrapper">
+            <label htmlFor="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+          {errorMessage && (
+          <div className="error-message" style={{ color: 'red', marginTop: '10px' }}>
+            {errorMessage}
+          </div>
+        )}
+          <div className="input-remember">
+            <input type="checkbox" id="remember-me" />
+            <label htmlFor="remember-me">Remember me</label>
+          </div>
+          <button type="submit" className="sign-in-button">Sign In</button>
+        </form>
+      </section>
+    </main>
   )
 }
 

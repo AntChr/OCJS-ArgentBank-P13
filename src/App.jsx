@@ -5,56 +5,28 @@ import './style/main.css'
 import SignIn from "./pages/SignIn";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-//import { useSelector, useDispatch } from 'react-redux'
-//import { increment, decrement, incrementByAmount, selectValue } from './features/counter/counterSlice'
+import User from "./pages/User";
+import PrivateRoute from "./utils/PrivateRoute";
+
 
 function App() {
-  // const [count, setCount] = useState(0)
-  // const count = useSelector(selectValue)
-  // const dispatch = useDispatch()
 
     return (
       <BrowserRouter>
       <Header />
       <Routes>
-          <Route path="/" element={<Home/>}/>
-          <Route path="/signin" element={<SignIn/>}/>
-          <Route path="*" element={<Error/>}/>
+        <Route path="/signin" element={<SignIn />} />
+        <Route path="/profile" element={
+          <PrivateRoute>
+            <User />
+          </PrivateRoute>
+        } />
+        <Route path="*" element={<Error />} />
+        <Route path="/" element={<Home />} />
       </Routes>
       <Footer />
-      </BrowserRouter>
+    </BrowserRouter>
   )
-    /*<>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => dispatch(increment())}>
-          Increment : count is {count}
-        </button>
-        <p></p>
-        <button onClick={() => dispatch(decrement())}>
-          Decrement: count is {count}
-        </button>
-        <p></p>
-        <button onClick={() => dispatch(incrementByAmount(10))}>
-          Increment by 10: count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )*/
 }
 
 export default App
