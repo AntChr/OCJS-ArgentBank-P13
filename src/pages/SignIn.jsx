@@ -1,20 +1,19 @@
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../utils/apiHandler';
-import { selectToken } from '../features/counter/authSlice';
+import { useNavigate } from 'react-router-dom';
 
 function SignIn() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
-    const dispatch = useDispatch();
-    const token = useSelector(selectToken);
+    const navigate = useNavigate();
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         const result = await loginUser(email, password);
         if (!result.error) {
-          console.log("Login successful:", result.login.data);
+          navigate('/profile')
         } else {
           console.error("Login failed:", result.error);
           setErrorMessage('Identifiant ou mot de passe incorrect');

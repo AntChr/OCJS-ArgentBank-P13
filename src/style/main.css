@@ -289,3 +289,12 @@ body {
     width: 200px;
   }
 }
+.edit-profil-container {
+  display: flex;
+  justify-content: center;
+}
+.edit-profil {
+  display: flex;
+  flex-direction: column;
+  margin: 10px 10px;
+}

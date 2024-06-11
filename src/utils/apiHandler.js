@@ -24,7 +24,7 @@ const urlUserInfo = "http://localhost:3001/api/v1/user/profile";
     try {
       const payload = { email, password };
       const response = await postAPI(urlLogin, payload);
-      const token = response.data.token;
+      const token = response.data.body.token;
       store.dispatch(setToken(token));
       return { login: response, error: false };
     } catch (error) {
@@ -55,6 +55,23 @@ const urlUserInfo = "http://localhost:3001/api/v1/user/profile";
       };
   
       const response = await axios.get(urlUserInfo, { headers });
+      return { userInfo: response.data, error: false };
+    } catch (error) {
+      return { userInfo: {}, error };
+    }
+  };
+
+  export const updateUserInfo = async (userInfo) => {
+    try {
+      const state = store.getState();
+      const token = selectToken(state);
+      if (!token) throw new Error("No token found");
+  
+      const headers = {
+        'Authorization': `Bearer ${token}`
+      };
+  
+      const response = await axios.put(urlUserInfo, userInfo, { headers });
       return { userInfo: response.data, error: false };
     } catch (error) {
       return { userInfo: {}, error };
