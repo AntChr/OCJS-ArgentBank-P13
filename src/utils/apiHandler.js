@@ -72,7 +72,7 @@ const urlUserInfo = "http://localhost:3001/api/v1/user/profile";
       };
   
       const response = await axios.put(urlUserInfo, userInfo, { headers });
-      return { userInfo: response.data, error: false };
+      return { user: response.data.body, error: false };
     } catch (error) {
       return { userInfo: {}, error };
     }

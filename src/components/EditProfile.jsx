@@ -1,23 +1,28 @@
 /* eslint-disable react/prop-types */
 import { useState } from 'react';
 import { updateUserInfo } from '../utils/apiHandler';
+import { useSelector, useDispatch } from 'react-redux';
+import { selectUser, setUser } from '../features/counter/authSlice';
 
-function EditProfile({ userInfo, onSave }) {
-  const [firstName, setFirstName] = useState(userInfo.firstName);
-  const [lastName, setLastName] = useState(userInfo.lastName);
+function EditProfile({ cancel }) {
+  const dispatch = useDispatch()
+  const user = useSelector(selectUser)
+
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await updateUserInfo({ firstName, lastName });
-      onSave({ firstName, lastName });
+      const userInfo = await updateUserInfo({ firstName, lastName });
+      dispatch(setUser(userInfo.user))
     } catch (error) {
       console.error('Error updating user info:', error);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={e => handleSubmit(e)}>
       <div className="edit-profil-container">
         <div className="edit-profil">
           <label htmlFor="firstname">FirstName</label>
@@ -25,6 +30,7 @@ function EditProfile({ userInfo, onSave }) {
             type="text"
             id="firstname"
             value={firstName}
+            placeholder={user?.firstName}
             onChange={(e) => setFirstName(e.target.value)}
           />
         </div>
@@ -34,12 +40,13 @@ function EditProfile({ userInfo, onSave }) {
             type="text"
             id="lastname"
             value={lastName}
+            placeholder={user?.lastName}
             onChange={(e) => setLastName(e.target.value)}
           />
         </div>
       </div>
       <button type="submit">Save</button>
-      <button type="button" onClick={() => onSave(null)}>Cancel</button>
+      <button type="button" onClick={() => cancel()}>Cancel</button>
     </form>
   );
 }

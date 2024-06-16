@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useSelector } from 'react-redux';
-import { selectToken } from '../features/counter/authSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import { selectToken, selectUser, setUser } from '../features/counter/authSlice';
 import { useNavigate } from 'react-router-dom';
 import EditProfile from '../components/EditProfile';
 
@@ -9,11 +9,15 @@ const urlUserInfo = "http://localhost:3001/api/v1/user/profile";
 
 const User = () => {
   const token = useSelector(selectToken);
-  const [userInfo, setUserInfo] = useState(null);
+  const user = useSelector(selectUser)
+  const dispatch = useDispatch()
+
+  // const [userInfo, setUserInfo] = useState(null);
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [editing, setEditing] = useState(false);
-  const navigate = useNavigate;
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!token) {
@@ -24,7 +28,7 @@ const User = () => {
         const response = await axios.post(urlUserInfo, {}, {
           headers: { 'Authorization': `Bearer ${token}` },
         });
-        setUserInfo(response.data.body);
+        dispatch(setUser(response.data.body))
       } catch (error) {
         setError(error);
       } finally {
@@ -33,25 +37,19 @@ const User = () => {
     };
 
     fetchUserInfo();
-  }, [token]);
+  }, []);
 
-  const handleSave = (updatedUserInfo) => {
-    if (updatedUserInfo) {
-      setUserInfo((prev) => ({ ...prev, ...updatedUserInfo }));
-    }
-    setEditing(false);
-  };
+  const handleCancel = () => setEditing(false);
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
   return (
-    <div>
       <main className="main bg-dark">
         <div className="header">
-          <h1>Welcome back<br />{userInfo.firstName} {userInfo.lastName}!</h1>
+          <h1>Welcome back<br />{user?.firstName} {user?.lastName}!</h1>
           {editing ? (
-            <EditProfile userInfo={userInfo} onSave={handleSave} />
+            <EditProfile cancel={handleCancel} />
           ) : (
             <button className="edit-button" onClick={() => setEditing(true)}>Edit Name</button>
           )}
@@ -88,7 +86,6 @@ const User = () => {
           </div>
         </section>
       </main>
-    </div>
   );
 };
 

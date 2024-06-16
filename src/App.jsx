@@ -10,7 +10,6 @@ import User from "./pages/User";
 
 
 function App() {
-
     return (
       <BrowserRouter>
       <Header />
