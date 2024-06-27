@@ -47,7 +47,7 @@ const User = () => {
   return (
       <main className="main bg-dark">
         <div className="header">
-          <h1>Welcome back<br />{user?.firstName} {user?.lastName}!</h1>
+          <h1>Welcome back !<br />{user?.firstName} {user?.lastName}</h1>
           {editing ? (
             <EditProfile cancel={handleCancel} />
           ) : (
